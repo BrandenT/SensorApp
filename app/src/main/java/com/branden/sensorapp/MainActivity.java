@@ -1,5 +1,9 @@
 package com.branden.sensorapp;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,6 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
     }
 
     @Override
@@ -44,6 +53,23 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            AlarmManager mAlarmManager;
+            PendingIntent mAlarmIntent;
+
+            AlarmService as = new AlarmService();
+            Calendar c = Calendar.getInstance();
+            c.add(Calendar.SECOND, 20);
+            as.createAlarm(this, c);
+
+            Toast.makeText(this, "Alarm set for: " + c.getTime().toString(), Toast.LENGTH_SHORT).show();
+
+            return true;
+        }
+
+        if(id == R.id.action_alarm) {
+            Toast.makeText(this, "Alarm Pressed", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(this, AlarmActivity.class);
+            this.startActivity(i);
             return true;
         }
 
